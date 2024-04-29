@@ -1,29 +1,31 @@
-export default function sortProperty(obj, order) {
-    const propSorted = [];
-  
-    for (let i = 0; i < order.length; i++) {
-      if (order[i] in obj) {
-        propSorted[i] = {
-          key: order[i],
-          value: obj[order[i]],
-        };
-      }
-    }
-  
-    const arr = [];
-    for (const property in obj) {
-      if (!order.includes(property)) {
-        arr.push(property);
-      }
-    }
-  
-    const newArr = arr.sort();
-    for (const property of newArr) {
-      propSorted.push({
-        key: property,
-        value: obj[property],
-      });
-    }
-  
-    return propSorted;
+function extractSpecialAttacks({ special }) {
+    return special.map(({ id, name, icon, description = 'Описание недоступно' }) => ({
+      id,
+      name,
+      icon,
+      description
+    }));
   }
+  
+  const character = {
+    name: 'Лучник',
+    type: 'Bowman',
+    health: 50,
+    level: 3,
+    attack: 40,
+    defence: 10,
+    special: [
+      {
+        id: 8,
+        name: 'Двойной выстрел',
+        icon: 'http://...',
+        description: 'Двойной выстрел наносит двойной урон'
+      }, 
+      {
+        id: 9,
+        name: 'Нокаутирующий удар',
+        icon: 'http://...'
+        // <- обратите внимание, описание "засекречено"
+      }
+    ]	
+  };

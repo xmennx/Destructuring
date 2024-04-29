@@ -1,42 +1,92 @@
-
-import sortProperty from '../app';
-
-test('Should be givin order', () => {
-  const obj = {
-    name: 'мечник',
-    health: 10,
-    level: 2,
-    attack: 80,
-    defence: 40,
-  };
-  const sortOrder = ['name', 'level'];
-  const result = sortProperty(obj, sortOrder);
-  const expected = [
-    { key: 'name', value: 'мечник' },
-    { key: 'level', value: 2 },
-    { key: 'attack', value: 80 },
-    { key: 'defence', value: 40 },
-    { key: 'health', value: 10 },
-  ];
-  expect(result).toEqual(expected);
-});
-
-test('Should be alphabet order', () => {
-  const obj = {
-    name: 'мечник',
-    health: 10,
-    level: 2,
-    attack: 80,
-    defence: 40,
-  };
-  const sortOrder = ['nickName', 'speciality'];
-  const result = sortProperty(obj, sortOrder);
-  const expected = [
-    { key: 'attack', value: 80 },
-    { key: 'defence', value: 40 },
-    { key: 'health', value: 10 },
-    { key: 'level', value: 2 },
-    { key: 'name', value: 'мечник' },
-  ];
-  expect(result).toEqual(expected);
-});
+function extractSpecialAttacks({ special }) {
+    return special.map(({ id, name, icon, description = 'Описание недоступно' }) => ({
+      id,
+      name,
+      icon,
+      description
+    }));
+  }
+  
+  describe('extractSpecialAttacks function', () => {
+    it('should return an array of objects with id, name, icon, and description fields extracted from special attacks', () => {
+      const character = {
+        name: 'Лучник',
+        type: 'Bowman',
+        health: 50,
+        level: 3,
+        attack: 40,
+        defence: 10,
+        special: [
+          {
+            id: 8,
+            name: 'Двойной выстрел',
+            icon: 'http://...',
+            description: 'Двойной выстрел наносит двойной урон'
+          }, 
+          {
+            id: 9,
+            name: 'Нокаутирующий удар',
+            icon: 'http://...'
+          }
+        ]	
+      };
+  
+      const expected = [
+        {
+          id: 8,
+          name: 'Двойной выстрел',
+          icon: 'http://...',
+          description: 'Двойной выстрел наносит двойной урон'
+        },
+        {
+          id: 9,
+          name: 'Нокаутирующий удар',
+          icon: 'http://...',
+          description: 'Описание недоступно'
+        }
+      ];
+  
+      expect(extractSpecialAttacks(character)).toEqual(expected);
+    });
+  
+    it('should return an array of objects with default description if description field is missing', () => {
+      const character = {
+        name: 'Лучник',
+        type: 'Bowman',
+        health: 50,
+        level: 3,
+        attack: 40,
+        defence: 10,
+        special: [
+          {
+            id: 8,
+            name: 'Двойной выстрел',
+            icon: 'http://...'
+          }, 
+          {
+            id: 9,
+            name: 'Нокаутирующий удар',
+            icon: 'http://...'
+          }
+        ]	
+      };
+  
+      const expected = [
+        {
+          id: 8,
+          name: 'Двойной выстрел',
+          icon: 'http://...',
+          description: 'Описание недоступно'
+        },
+        {
+          id: 9,
+          name: 'Нокаутирующий удар',
+          icon: 'http://...',
+          description: 'Описание недоступно'
+        }
+      ];
+  
+      expect(extractSpecialAttacks(character)).toEqual(expected);
+    });
+  });
+  
